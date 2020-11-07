@@ -84,8 +84,21 @@ public class StudentService {
         return groupList;
     }
 
+    public void updateGroupName(Group group) throws BusinessException {
+        Optional<Group> groupOptional = getGroupById(group.getId());
+        if (!groupOptional.isPresent()){
+            throw new BusinessException(EmBusinessError.PARAMETER_VALIDATION_ERROR);
+        }
+        groupOptional.get().setName(group.getName());
+    }
+
     private Optional<Student> getStudentById(Integer id) {
         List<Student> collect = studentList.stream().filter(student -> student.getId() == id).collect(Collectors.toList());
+        return collect.size() == 0 ? null : Optional.of(collect.get(0));
+    }
+
+    private Optional<Group> getGroupById(Integer id) {
+        List<Group> collect = groupList.stream().filter(group -> group.getId() == id).collect(Collectors.toList());
         return collect.size() == 0 ? null : Optional.of(collect.get(0));
     }
 }

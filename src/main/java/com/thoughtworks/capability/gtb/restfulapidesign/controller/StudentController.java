@@ -58,4 +58,10 @@ public class StudentController {
     public List<Group> groupStudents(){
         return studentService.groupStudents();
     }
+
+    @PatchMapping("/group")
+    @ResponseStatus(code = HttpStatus.CREATED)
+    public void updateGroupName(@RequestBody Group group) throws BusinessException {
+        studentService.updateGroupName(group);
+    }
 }
