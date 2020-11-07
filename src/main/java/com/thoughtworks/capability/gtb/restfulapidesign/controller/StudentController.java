@@ -19,13 +19,13 @@ public class StudentController {
 
     @GetMapping("/students")
     @ResponseStatus(code = HttpStatus.OK)
-    public List<Student> getStudents(){
+    public List<Student> getStudents() {
         return studentService.getStudentList();
     }
 
     @PostMapping("/student")
     @ResponseStatus(code = HttpStatus.CREATED)
-    public void addStudent(@RequestBody Student student){
+    public void addStudent(@RequestBody Student student) {
         studentService.addStudent(student);
     }
 
@@ -37,7 +37,7 @@ public class StudentController {
 
     @GetMapping("/students/{gender}")
     @ResponseStatus(code = HttpStatus.OK)
-    public List<Student> getStudentsByGender(@PathVariable String gender){
+    public List<Student> getStudentsByGender(@PathVariable String gender) {
         return studentService.getStudentListByGender(gender);
     }
 
@@ -49,13 +49,13 @@ public class StudentController {
 
     @PatchMapping("/student")
     @ResponseStatus(code = HttpStatus.CREATED)
-    public void updateStudentPartInf(@RequestBody Student student){
+    public void updateStudentPartInf(@RequestBody Student student) {
         studentService.updateStudentPartInfo(student);
     }
 
-    @GetMapping("/groups")
+    @GetMapping("/students/groups")
     @ResponseStatus(code = HttpStatus.OK)
-    public List<Group> groupStudents(){
+    public List<Group> groupStudents() {
         return studentService.groupStudents();
     }
 
@@ -63,5 +63,11 @@ public class StudentController {
     @ResponseStatus(code = HttpStatus.CREATED)
     public void updateGroupName(@RequestBody Group group) throws BusinessException {
         studentService.updateGroupName(group);
+    }
+
+    @GetMapping("/groups")
+    @ResponseStatus(code = HttpStatus.OK)
+    public List<Group> getGroups() {
+        return studentService.getGroups();
     }
 }

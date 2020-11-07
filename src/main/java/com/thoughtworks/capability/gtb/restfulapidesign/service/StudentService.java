@@ -101,4 +101,11 @@ public class StudentService {
         List<Group> collect = groupList.stream().filter(group -> group.getId() == id).collect(Collectors.toList());
         return collect.size() == 0 ? null : Optional.of(collect.get(0));
     }
+
+    public List<Group> getGroups() {
+        if (groupList.get(0).getStudents()==null){
+            groupStudents();
+        }
+        return groupList;
+    }
 }
