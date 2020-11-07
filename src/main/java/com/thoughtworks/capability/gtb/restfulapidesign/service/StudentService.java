@@ -6,8 +6,8 @@ import com.thoughtworks.capability.gtb.restfulapidesign.exception.EmBusinessErro
 import com.thoughtworks.capability.gtb.restfulapidesign.repository.StudentRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 
@@ -28,16 +28,11 @@ public class StudentService {
     }
 
     public void deleteStudent(Integer studentId) throws BusinessException {
-        Student delStu = null;
-        for (Student stu : studentList) {
-            if (stu.getId() == studentId) {
-                delStu = stu;
-            }
-        }
-        if (delStu == null) {
+        Optional<Student> studentOptional = getStudentById(studentId);
+        if (!studentOptional.isPresent()){
             throw new BusinessException(EmBusinessError.PARAMETER_VALIDATION_ERROR);
         }
-        studentList.remove(delStu);
+        studentList.remove(studentOptional.get());
     }
 
 
@@ -49,8 +44,27 @@ public class StudentService {
         return studentList.stream().filter(student -> student.getGender().equals(gender)).collect(Collectors.toList());
     }
 
-    public Student getStudentListById(Integer id) {
+    public Student getStudentListById(Integer id) throws BusinessException {
+        Optional<Student> studentOptional = getStudentById(id);
+        if (!studentOptional.isPresent()){
+            throw new BusinessException(EmBusinessError.PARAMETER_VALIDATION_ERROR);
+        }
+        return studentOptional.get();
+    }
+
+    public void updateStudentPartInfo(Student student) {
+        Optional<Student> studentOptional = getStudentById(student.getId());
+        if (studentOptional.isPresent()){
+            Student stu = studentOptional.get();
+            stu.setGender(student.getGender());
+            stu.setName(student.getName());
+            stu.setNote(student.getNote());
+        }
+
+    }
+
+    private Optional<Student> getStudentById(Integer id){
         List<Student> collect = studentList.stream().filter(student -> student.getId() == id).collect(Collectors.toList());
-        return collect.size() == 0 ? null : collect.get(0);
+        return collect.size() == 0 ? null : Optional.of(collect.get(0));
     }
 }

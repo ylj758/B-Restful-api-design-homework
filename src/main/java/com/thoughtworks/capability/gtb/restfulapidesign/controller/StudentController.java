@@ -42,9 +42,13 @@ public class StudentController {
 
     @GetMapping("/student/{id}")
     @ResponseStatus(code = HttpStatus.OK)
-    public Student getStudentsByGender(@PathVariable Integer id){
+    public Student getStudentsById(@PathVariable Integer id) throws BusinessException {
         return studentService.getStudentListById(id);
     }
 
-
+    @PatchMapping("/student")
+    @ResponseStatus(code = HttpStatus.CREATED)
+    public void updateStudentPartInf(@RequestBody Student student){
+        studentService.updateStudentPartInfo(student);
+    }
 }
