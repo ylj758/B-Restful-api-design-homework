@@ -1,13 +1,13 @@
 package com.thoughtworks.capability.gtb.restfulapidesign.service;
 
+import com.thoughtworks.capability.gtb.restfulapidesign.dto.Group;
 import com.thoughtworks.capability.gtb.restfulapidesign.dto.Student;
 import com.thoughtworks.capability.gtb.restfulapidesign.exception.BusinessException;
 import com.thoughtworks.capability.gtb.restfulapidesign.exception.EmBusinessError;
 import com.thoughtworks.capability.gtb.restfulapidesign.repository.StudentRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 
@@ -16,10 +16,12 @@ public class StudentService {
     final StudentRepository studentRepository;
 
     private List<Student> studentList;
+    private List<Group> groupList;
 
     public StudentService(StudentRepository studentRepository) {
         this.studentRepository = studentRepository;
         studentList = studentRepository.getStudents();
+        groupList = studentRepository.getGroups();
     }
 
     public void addStudent(Student student) {
@@ -29,7 +31,7 @@ public class StudentService {
 
     public void deleteStudent(Integer studentId) throws BusinessException {
         Optional<Student> studentOptional = getStudentById(studentId);
-        if (!studentOptional.isPresent()){
+        if (!studentOptional.isPresent()) {
             throw new BusinessException(EmBusinessError.PARAMETER_VALIDATION_ERROR);
         }
         studentList.remove(studentOptional.get());
@@ -46,7 +48,7 @@ public class StudentService {
 
     public Student getStudentListById(Integer id) throws BusinessException {
         Optional<Student> studentOptional = getStudentById(id);
-        if (!studentOptional.isPresent()){
+        if (!studentOptional.isPresent()) {
             throw new BusinessException(EmBusinessError.PARAMETER_VALIDATION_ERROR);
         }
         return studentOptional.get();
@@ -54,7 +56,7 @@ public class StudentService {
 
     public void updateStudentPartInfo(Student student) {
         Optional<Student> studentOptional = getStudentById(student.getId());
-        if (studentOptional.isPresent()){
+        if (studentOptional.isPresent()) {
             Student stu = studentOptional.get();
             stu.setGender(student.getGender());
             stu.setName(student.getName());
@@ -63,7 +65,26 @@ public class StudentService {
 
     }
 
-    private Optional<Student> getStudentById(Integer id){
+    public List<Group> groupStudents() {
+        List<Student> randomStudents = new ArrayList<>();
+        studentList.forEach(student -> randomStudents.add(student));
+        Collections.shuffle(randomStudents);
+        int studentCount = studentList.size();
+        int baseCount = studentCount / 6;
+        int leftCount = studentCount % 6;
+
+        for (Group group : groupList) {
+            List<Student> list = randomStudents.stream().limit(baseCount).collect(Collectors.toList());
+            group.setStudents(list);
+            list.forEach(student -> randomStudents.remove(student));
+        }
+        for (int i=0;i<leftCount;i++){
+            groupList.get(i).getStudents().add(randomStudents.get(i));
+        }
+        return groupList;
+    }
+
+    private Optional<Student> getStudentById(Integer id) {
         List<Student> collect = studentList.stream().filter(student -> student.getId() == id).collect(Collectors.toList());
         return collect.size() == 0 ? null : Optional.of(collect.get(0));
     }

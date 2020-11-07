@@ -1,5 +1,6 @@
 package com.thoughtworks.capability.gtb.restfulapidesign.repository;
 
+import com.thoughtworks.capability.gtb.restfulapidesign.dto.Group;
 import com.thoughtworks.capability.gtb.restfulapidesign.dto.Student;
 import org.springframework.stereotype.Repository;
 
@@ -9,6 +10,7 @@ import java.util.List;
 @Repository
 public class StudentRepository {
     private List<Student> studentList;
+    private List<Group> groupList;
 
     public List<Student> getStudents() {
         studentList = new ArrayList<>();
@@ -28,5 +30,16 @@ public class StudentRepository {
         studentList.add(new Student(14, "大乔", "female"));
         studentList.add(new Student(15, "蔡文姬", "female"));
         return studentList;
+    }
+
+    public List<Group> getGroups(){
+        groupList = new ArrayList<>(6);
+        groupList.add(new Group(1, "1 组",null,null));
+        groupList.add(new Group(2, "2 组",null,null));
+        groupList.add(new Group(3, "3 组",null,null));
+        groupList.add(new Group(4, "4 组",null,null));
+        groupList.add(new Group(5, "5 组",null,null));
+        groupList.add(new Group(6, "6 组",null,null));
+        return groupList;
     }
 }

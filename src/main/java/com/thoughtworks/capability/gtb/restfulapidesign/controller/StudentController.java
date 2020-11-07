@@ -1,5 +1,6 @@
 package com.thoughtworks.capability.gtb.restfulapidesign.controller;
 
+import com.thoughtworks.capability.gtb.restfulapidesign.dto.Group;
 import com.thoughtworks.capability.gtb.restfulapidesign.dto.Student;
 import com.thoughtworks.capability.gtb.restfulapidesign.exception.BusinessException;
 import com.thoughtworks.capability.gtb.restfulapidesign.service.StudentService;
@@ -50,5 +51,11 @@ public class StudentController {
     @ResponseStatus(code = HttpStatus.CREATED)
     public void updateStudentPartInf(@RequestBody Student student){
         studentService.updateStudentPartInfo(student);
+    }
+
+    @GetMapping("/groups")
+    @ResponseStatus(code = HttpStatus.OK)
+    public List<Group> groupStudents(){
+        return studentService.groupStudents();
     }
 }
