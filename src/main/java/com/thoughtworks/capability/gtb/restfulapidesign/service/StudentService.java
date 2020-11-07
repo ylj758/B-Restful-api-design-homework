@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -42,5 +43,9 @@ public class StudentService {
 
     public List<Student> getStudentList() {
         return studentList;
+    }
+
+    public List<Student> getStudentListByGender(String gender) {
+        return studentList.stream().filter(student -> student.getGender().equals(gender)).collect(Collectors.toList());
     }
 }

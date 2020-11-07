@@ -34,5 +34,10 @@ public class StudentController {
         studentService.deleteStudent(id);
     }
 
+    @GetMapping("/students/{gender}")
+    @ResponseStatus(code = HttpStatus.OK)
+    public List<Student> getStudentsByGender(@PathVariable String gender){
+        return studentService.getStudentListByGender(gender);
+    }
 
 }

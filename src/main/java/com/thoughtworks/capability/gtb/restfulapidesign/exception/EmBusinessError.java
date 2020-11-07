@@ -15,9 +15,4 @@ public enum EmBusinessError implements CommonError {
 
     private int errorCode;
     private String errorMsg;
-
-    @Override
-    public CommonError setErrorMsg(String errorMsg) {
-        return null;
-    }
 }
